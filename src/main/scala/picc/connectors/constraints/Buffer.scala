@@ -6,13 +6,12 @@ import scala.collection.immutable.Map
 
 
 /**
- * Caching mechanism for [[reopp.common.Function]]'s and [[reopp.common.Predicate]]'s:
+ * Caching mechanism for [[Function]]'s and [[Predicate]]'s:
  * each function and predicate is evaluated with the same argument only once,
  * and the results are buffered.
  *
  * User: jose
- * Date: 13/07/12
- * Time: 11:44
+ * Date: 1/03/16
  */
 
 class Buffer {
@@ -31,17 +30,6 @@ class Buffer {
     case Nil => d
     case (f: Function)::(fs: List[Function]) =>
       calculate(fs,calculate(f,d))
-//      if (calculatedF contains (f,d)) {
-////        println("# buffered func #")
-//        calculate(fs,calculatedF((f,d)))
-//      }
-//      else {
-//        val res = f.calculate(d)
-////        println("# adding "+f+"("+d+") -> "+res+" to buffer "+hashCode())
-//        calculatedF += (f,d) -> res
-////        print("# Calc func - "+res+" ")
-//        calculate(fs,res)
-//      }
   }
 
   /**
@@ -123,7 +111,7 @@ class Buffer {
     for (((f2,d),dres) <- calculatedF) {
 //      print(" - "+f2+"("+d+")")
       if (f2 == f) {
-        if (!arg.isDefined || (arg.get != d)) {
+        if (arg.isEmpty || (arg.get != d)) {
 //          println(" *** succeeded - rollingback ***" +f+"("+d+") = "+ dres+" - except "+data)
           undo.calculate(d,dres)
         }
@@ -143,12 +131,12 @@ class Buffer {
     //println("importing other buffer "+other)
     for ((f,r) <- other.calculatedF)
       if (calculatedF contains f) {
-        if (calculatedF.get(f) != r) calculatedF -= f
+        if (calculatedF.get(f) != Some(r)) calculatedF -= f
       } 
       else calculatedF += (f -> r)
     for ((p,r) <- other.calculatedP)
       if (calculatedP contains p) {
-        if (calculatedP.get(p) != r) calculatedP -= p
+        if (calculatedP.get(p) != Some(r)) calculatedP -= p
       } 
       else calculatedP += (p -> r)
   }
