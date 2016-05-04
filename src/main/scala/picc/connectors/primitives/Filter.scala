@@ -33,8 +33,8 @@ class Filter(a: String, b: String,p: Predicate, positive:Boolean = true) extends
   //                    else      Neg(Pred(dataVar(a,uid),p)))
   //}
 
-  protected def guard: Guard = if (positive) Pred(a,p)
-  else      Neg(Pred(a,p))
+  protected def guard: Guard = if (positive) a:<p //Pred(a,p)
+  else      Neg(a:<p)
 
   def getConstraint = Constraint(
     b --> a,
