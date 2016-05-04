@@ -1,6 +1,6 @@
 name := "picc"
 
-version := "1.0"
+version := "1.1"
 
 scalaVersion := "2.11.7" // "2.10.5" --> needed for z3
 
