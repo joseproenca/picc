@@ -34,18 +34,22 @@ object Dot {
     val (ins,outs)  = inferDir(p.getConstraint)
     var ios  = p.ends.toSet -- ins -- outs
     for (i <- ins; o <- outs)
-      res append s"  $i -> $o [label=${namePrim(p)}]\n"
+      res append s"  $i -> $o [label=${namePrim(p)}];\n"
     for (i <- ins; o <- ios)
-      res append s"  $i -> $o [label=${namePrim(p)}]\n"
+      res append s"  $i -> $o [label=${namePrim(p)}];\n"
     for (i <- ios; o <- outs)
-      res append s"  $i -> $o [label=${namePrim(p)}]\n"
+      res append s"  $i -> $o [label=${namePrim(p)}];\n"
     for (i <- ios; o <- ios; if p.ends.indexOf(i) < p.ends.indexOf(o))
-      res append s"  $i -> $o [label=${namePrim(p)}]\n" //dir=none/both
+      res append s"  $i -> $o [dir=none,label=${namePrim(p)}];\n" //dir=none/both
+    for (i <- ins; o <- ins; if p.ends.indexOf(i) < p.ends.indexOf(o))
+      res append s"  $i -> $o [dir=none,label=${namePrim(p)}];\n" //dir=none/both
+    for (i <- outs; o <- outs; if p.ends.indexOf(i) < p.ends.indexOf(o))
+      res append s"  $i -> $o [dir=none,label=${namePrim(p)}];\n" //dir=none/both
     p.ends match {
       case (end::Nil) =>
-        if (ins  contains end) res append s"  $end -> ${namePrim(p)}" else
-        if (outs contains end) res append s"  ${namePrim(p)} -> $end" else
-                               res append s"  $end -> ${namePrim(p)} [dir=none]"
+        if (ins  contains end) res append s"  $end -> ${namePrim(p)};" else
+        if (outs contains end) res append s"  ${namePrim(p)} -> $end;" else
+                               res append s"  $end -> ${namePrim(p)} [dir=none];"
       case _ =>
     }
     res.toString()

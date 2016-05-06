@@ -61,18 +61,29 @@ abstract class Primitive(val ends: List[String]) {
     *
     * @return Possible solution for the current step
    */
-  def doStep: OptSolution = {
+  def doStep(): OptSolution = {
+    val s = getConstraint.solve
+    update(s)
+    s
+  }
+
+  /**
+    * Same as [[doStep]], but with a println with a solution to each executed step
+    * @return Possible solution for the current step
+    */
+  def doDebugStep(): OptSolution = {
     val s = getConstraint.solve
     update(s)
     println("-- step done --\n"+s)
     s
   }
 
+
   /**
    * Keeps performing steps until no dataflow is possible.
    */
   def run() {
-    if (doStep.isDefined) run()
+    if (doStep().isDefined) run()
   }
 
 
