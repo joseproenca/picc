@@ -2,7 +2,7 @@ name := "picc"
 
 version := "1.2"
 
-scalaVersion := "2.11.7" // "2.10.5" --> needed for z3
+scalaVersion := "2.11.8" // "2.10.5" --> needed for z3
 
 libraryDependencies ++= Seq(
   // unit tests
